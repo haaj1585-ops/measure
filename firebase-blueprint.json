@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Public profile information for a Physique Pro user.",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["displayName", "email", "createdAt"]
+    },
+    "Measurement": {
+      "title": "Body Measurement",
+      "description": "A single measurement entry for a body part.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "bodyPart": { 
+          "type": "string",
+          "enum": ["Weight", "Body Fat %", "Neck", "Shoulders", "Chest", "Biceps (Left)", "Biceps (Right)", "Forearms", "Waist", "Hips", "Thighs (Left)", "Thighs (Right)", "Calves (Left)", "Calves (Right)"]
+        },
+        "value": { "type": "number" },
+        "unit": { "type": "string", "enum": ["cm", "in", "kg", "lbs", "%"] },
+        "notes": { "type": "string" }
+      },
+      "required": ["userId", "date", "bodyPart", "value", "unit"]
+    },
+    "Friendship": {
+      "title": "Friendship Link",
+      "description": "A connection between two users.",
+      "type": "object",
+      "properties": {
+        "user1Id": { "type": "string" },
+        "user2Id": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["user1Id", "user2Id", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles indexed by UID."
+    },
+    "measurements/{measurementId}": {
+      "schema": "Measurement",
+      "description": "All measurements recorded in the system."
+    },
+    "friendships/{friendshipId}": {
+      "schema": "Friendship",
+      "description": "Friend links between users."
+    }
+  }
+}
